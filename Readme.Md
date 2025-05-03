@@ -88,10 +88,6 @@ cap = cv2.VideoCapture(0)
 - Zoom maksimal: **2.0x**
 - Zoom minimal: **1.0x**
 
-## 📄 License
-
-[MIT](LICENSE)
-
 ## 🙌 Kontributor
 
 Dwiki Arlian Maulana
