@@ -2,6 +2,10 @@ import cv2
 import mediapipe as mp
 import math
 import numpy as np
+import logging
+
+# Setup Logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Setup MediaPipe Hands & Face
 mp_hands = mp.solutions.hands
@@ -112,6 +116,11 @@ while True:
                 if not filter_changed:
                     current_filter = (current_filter + 1) % len(filters)
                     filter_changed = True
+                    # Cek apakah filter aktif dan tidak None
+                    if filters[current_filter]:
+                        logging.info(f"Filter changed to: {filters[current_filter].__name__}")
+                    else:
+                        logging.warning(f"Invalid filter at index {current_filter}")
             else:
                 hand_status = "Hand Closed"
                 filter_changed = False
@@ -123,8 +132,10 @@ while True:
 
             if dist > 150:
                 zoom_scale += zoom_step
+                logging.info(f"Zoom In: {zoom_scale:.2f}x")
             elif dist < 50:
                 zoom_scale -= zoom_step
+                logging.info(f"Zoom Out: {zoom_scale:.2f}x")
 
             zoom_scale = max(1.0, min(2.0, zoom_scale))
 
@@ -145,6 +156,7 @@ while True:
 
             cv2.rectangle(filtered_frame, (xmin, ymin), (xmin + box_width, ymin + box_height), (255, 0, 0), 2)
             face_count += 1
+        logging.info(f"{face_count} face(s) detected.")
 
     # Zoom effect
     center_x, center_y = w // 2, h // 2
